@@ -1,0 +1,228 @@
+Version 0.20.0 (2013/07/20)
+
+  * Rewrote the library to use the OpenCV C++ interface
+  * Breaking changes: will require a C++11-compliant compiler
+  * Added a simpler, more efficient labelling algorithm, does not compute contours
+  * (Temporarily) removed tracking support
+
+Version 0.10.4 (2011/01/26)
+
+  * CMakeLists.txt, cvBlobConfig.cmake.in: created "cvBlobConfig.cmake" for
+  easy integration with CMAKE projects. Thanks to zorzalzilba.
+
+  * cvlabel.cpp: fixed bug in the function cvLabel by which it calculates area
+  off by one.
+
+  * cvblob.h: removed references to cvCentralMoments. Fixed bug with
+  "cvGreaterBlob".
+
+Version 0.10.3 (2010/11/12)
+
+  * cvlabel.cpp: a little optimization in "cvLabel".
+
+  * cvblob.cpp, cvlabel, cvblob.h: optimization of central moments
+  calculation. Deleted: "cvCentralMoments" function and
+  "centralMoments" member of CvBlob type.
+
+  * cvblob.cpp, cvblob.h: new function "cvSaveImageBlob".
+
+  * red_object_tracking.cpp: "cvSaveImageBlob" demo.
+
+  * cvblob.cpp: fixes in "cvRenderBlobs" function.
+
+  * cvtrack.cpp: fixes in "cvRenderTracks" function.
+
+  * cvblob.h: fix problem when using "IPL_DEPTH_LABEL" outside "cvb" namespace.
+  Thanks to recastrodiaz.
+
+  * cvcountour.cpp: check size in "cvConvertChainCodesToPolygon" (thanks to
+  tengyaogao). New function: cvContourPolygonCircularity.
+
+  * test.cpp: clear image before render. Thanks to tengyaogao.
+
+  * test_random.cpp: fixed portability issues and other minor changes.
+
+  * CMakeLists.cmake, cvBlob/CMakeLists: compile dynamic library. Deleted
+  "FindOpenCV.cmake".
+
+Version 0.10.2 (2010/06/07)
+
+  * cvblob.cpp, cvblob.h: new function "cvFilterByLabel".
+
+  * cvcontour.cpp, cvblob.h: new function: cvContourChainCodePerimeter. Thanks
+  to meonimarco.
+
+  * cvlabel.cpp: fixed wrong background in cvFilterLabels. Thanks to
+  mathias.ferraton.
+
+  * cvblob.cpp, ...: fixed some compilation warnings.
+
+  * cvcontour.cpp: some asserts deleted and/or fixed.
+
+  * test_random.cpp: test improved.
+
+Version 0.10.1 (2010/04/19)
+
+  * cvcontour.cpp: "cvWriteContourPolygonCSV" function.
+
+  * cvblob.h: new function cvReleaseBlob. Fixed memory leak in
+  "cvReleaseBlobs".
+  
+  * cvblob.cpp: Fixed memory leak in "cvFilterByArea".
+
+Version 0.10.0 (2010/03/18)
+
+  * cvlabel.cpp: new labeling algorithm.
+
+  * cvcontour.cpp: "cvGetContour" function deleted (this functionality is
+  doing now by "cvLabel").
+
+  * cvcolor.cpp: new file. Function: "cvBlobMeanColor".
+
+  * cvblob.cpp: new function "cvRenderBlob". Fixed bug in "cvRenderBlobs" (now
+  uses "cvRenderBlob").
+
+  * cvaux.cpp: bug fixed (change "abs" for "fabs"). Thanks, sircoko.
+
+Version 0.9.14 (2010/03/10)
+
+  * cvlabel.cpp, cvblob.h: function "cvGetLabel".
+
+  * Makefile, red_object_tracking.cpp: sample program.
+
+Version 0.9.13 (2010/01/01)
+
+  * several files: namespace "cvb".
+
+  * cvblob.h, cvcontour.cpp: function to write contour to a SVG file.
+
+  * cvblob.h, cvtrack.cpp: tracking algorithm rewritten and new mode for
+  render tracks.
+
+Version 0.9.12 (2009/12/01)
+
+  * cvaux.cpp: new file. Auxiliar functions.
+
+  * cvcontour.cpp: bug fixed in cvConvertChainCodesToPolygon. Problem with
+  blobs of one pixel. New functions.
+
+  * cvtrack.cpp: memory leak fixed in cvRenderTracks.
+
+  * cvblob.h: doxygen documentation. New functions.
+
+Version 0.9.11 (2009/10/01)
+
+  * cvblob.cpp, cvlabel.cpp, cvtracker.cpp, cvcontour.cpp: error handling
+  OpenCV's style.
+
+  * cvlabel.ccp: Fixed another bug about ranges.
+
+Version 0.9.10 (2009/09/30)
+
+  * cvlabel.cpp: Fixed a mistake in the labeling algorithm.
+
+  * cvcontour.cpp: new file. Contours.
+
+  * cvblob.h: contours types and functions.
+
+  * test.cpp: added ROI and contours for test.
+
+Version 0.9.9 (2009/09/11)
+
+  * cvblob.cpp, cvlabel.cpp: ImageROI support by Kouichi Nishino.
+
+  * cvblob.h, cvtrack.cpp: new features. Tracking implementation.
+
+  * test_tracking.cpp: new test for tracking. 
+
+  * EnterExitCrossingPaths2front_blobs.mpeg,
+  EnterExitCrossingPaths2front_blobs.txt: new files. Video for tracking test
+  and info about the video.
+
+  * CMakeLists.txt: various files. Updated. Also "Release/Debug" flag added to
+  main "CMakeLists.txt".
+
+  * README: updated contributors.
+
+  * Doxyfile: removed obsolete parameter.
+
+Version 0.9.8 (2009/03/13)
+
+  * cvblob.h: Doxygen documentation added.
+
+  * Doxyfile: new file. Doxygen configuration.
+
+  * cvlabel: fixed bounding box area calculation in cvRenderBlobs, and blobs
+  structure release.
+
+  * cvblob.h, cvblob.cpp:
+    + cvReleaseBlobs: new function to release memory.
+    + Various: trying some optimization.
+
+  * test.cpp: releases blobs.
+
+Version 0.9.7 (2009/01/09)
+
+  * cvblob.cpp: fixed little bug in cvRenderBlobs.
+
+  * cvlabel.cpp: fixed memory bug in cvLabel.
+
+Version 0.9.6 (2009/01/07)
+
+  * cvblob.cpp:
+    + Various: fixed some warnings and indentation.
+    + cvRenderBlobs: new features. Now print blob information to log and standard
+    out.
+
+  * cvblob.h: cvRenderBlobs new features.
+
+  * cvlabel.h: fixed issue about the calculation of the blob area.
+
+Version 0.9.5 (2009/01/04)
+
+  * cvlabel.cpp, cvblob.cpp: fixed bug that appears when images has an odd
+  number of columns. "widhtStep", "depth" and "nChannels" are used now. Thanks
+  again to Stefan Gachter for give me the solution.
+
+Version 0.9.4 (2008/12/18)
+
+  * cvblob.cpp:
+    + cvCentralMoments: checks if central moments was been calculate before.
+    + cvRenderBlobs: new function to render blobs.
+    + cvAngle: check if central moments have been caclulated.
+
+  * cvlabel.cpp: initialize "centralMoments".
+
+  * cvblob.h:
+    + IPL_DEPTH_LABEL: now is calculated.
+    + CvBlob: new member: "centralMoments".
+    + cvCentralMoments: image is keeping constant.
+    + cvRenderBlobs: head and "defines".
+
+  * test.cpp: now uses the new function "cvRenderBlobs".
+
+Version 0.9.3 (2008/12/17)
+
+  * cvlabel.cpp: rewritten changes of version 0.9.1.
+
+Version 0.9.2 (2008/12/15)
+
+  * README: updated instructions for instalation of dependencies.
+
+  * CMakeList: new version and line required by CMake 2.6.
+
+Version 0.9.1 (2008/12/12)
+
+  * Fixed labeling: works with all the pixels of the binary image (even
+  borders) and with any number of colunms. Also, the format was fixed. Thanks
+  to Stefan Gachter.
+
+  * Function "merge": it didn't return anything. Thanks to yostane.
+
+  * README: updated.
+
+Version 0.9.0 (2008/09/29)
+
+  * Test: implemented.
+
+  * README: redacted first version.

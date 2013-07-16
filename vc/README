@@ -1,0 +1,18 @@
+README for cvBlobDLL.
+
+
+1. INTRODUCTION
+
+This is C++ project, which exports the classes as C++ exports and generates
+a DLL and a lib.
+
+2. COMPILING
+
+This is a Visual C++ 2012 project. Make sure cvBlob is compiled, and 
+libraries and includes paths are set right.
+
+
+3. AUTHOR
+
+        Giandomenico De Sanctis		Web page: http://gidesa.altervista.org/
+        Fabrice de Gans-Riberi
