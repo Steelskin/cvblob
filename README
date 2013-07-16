@@ -1,4 +1,4 @@
-README for 0.10.4 cvBlob.
+README for 0.20.0 Alpha cvBlob.
 
 
 1. DOWNLOAD LATEST SOURCE
@@ -58,33 +58,23 @@ To change the destination path for the installation, set "CMAKE_INSTALL_PREFIX" 
 
 3.3 Problems
 
-Latest information about compiling:
-	http://code.google.com/p/cvblob/wiki/HowToCompile
+Encountered an issue? Tell us about it!
+	https://github.com/Steelskin/cvblob/issues
 
 
 4. INFORMATION
 
 The official home page of cvBlob is:
-	http://cvblob.googlecode.com
-
-Downloads:
-	http://code.google.com/p/cvblob/downloads/list 
-
-Documentation:
-	http://code.google.com/p/cvblob/wiki/WikiIndex?tm=6
-
-Bug reports:
-	http://code.google.com/p/cvblob/issues/list
-
+	https://github.com/Steelskin/cvblob
 
 5. MAIN AUTHOR
 
 Comments, suggestions and, why not, donations (PayPal) to:
 
-	Cristóbal Carnero Liñán		E-mail: grendel.ccl@gmail.com
-
+    Fabrice de Gans-Riberi      E-mail: fabrice.degans@gmail.com
 
 6. CONTRIBUTORS
 
-	Stefan Gachter			Web page: http://gachter.name
+	Cristóbal Carnero Liñán		E-mail: grendel.ccl@gmail.com (first author)
+	Stefan Gachter			    Web page: http://gachter.name
 	Kouichi Nishino
