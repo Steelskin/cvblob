@@ -49,56 +49,82 @@
 #define CV_BLOB_RENDER_TO_LOG           0x0010 ///< Print blob data to log out. \see RenderBlob
 #define CV_BLOB_RENDER_TO_STD           0x0020 ///< Print blob data to std out. \see RenderBlob
 
-
 namespace cvb {
 
     /// \brief Type of Label.
     typedef uint8_t Label;
 #define CVB_LABEL CV_8UC1
 
-    /// \brief Class that contains information abotu one blob.
+    /// \brief Class that contains information about one blob.
     class CVBLOB_EXPORT Blob {
     public:
+        /// \brief Constructor, with one dot.
+        /// \param point   The blob first point.
+        /// \param name    The blob label.
         Blob(cv::Point point, Label label);
+
+        /// \brief Constructor, with one line.
+        /// \param min_x   The line first point X-coordinate.
+        /// \param max_x   The line last point X-coordinate.
+        /// \param y       The line Y-coordinate.
+        /// \param name    The blob label.
         Blob(unsigned int min_x, unsigned int max_x, unsigned int y, Label label);
 
-        Label label; ///< Label
+        Label label; ///< Label.
 
+        /// \brief  Gets the contour.
+        /// \returns   The contour.
         Contour get_Contour() const;
+
+        /// \brief Gets a copy of the internal contours.
+        /// \return The internal contours.
         ContoursList get_InternalContours() const;
 
+        /// \brief Gets the centroid.
+        /// \return The Centroid.
         cv::Point2d get_Centroid() const;
 
-        /// \fn double get_Angle() const
         /// \brief Calculates angle orientation of a blob.
         /// \return Angle orientation in radians.
-        /// \see CvBlob
         double get_Angle() const;
 
+        /// \brief Gets the blob area.
+        /// \return The blob area.
         unsigned int get_Area() const;
 
-        /// \fn void get_BoundingBox() const
-        /// \brief Returns the blob bounding box
+        /// \brief Gets the blob bounding box.
+        /// \return The blob bounding box.
         cv::Rect get_BoundingBox() const;
 
+        /// \brief Adds a chain code to the blob contour.
+        /// \param chainCode The chain code to be added.
         void add_ChainCode(ChainCode chainCode);
+
+        /// \brief Adds a point to the blob moments.
+        /// \param x X-coordinate of the point.
+        /// \param y Y-coordinate of the point.
         void add_Moment(unsigned int x, unsigned int y);
-        void add_Moments(unsigned int min_x, unsigned int max_x, unsigned int y);
+
+        /// \brief Adds a line the the blob moments.
+        /// \param min_x   The line first point X-coordinate.
+        /// \param max_x   The line last point X-coordinate.
+        /// \param y       The line Y-coordinate.
+        void add_Moment(unsigned int min_x, unsigned int max_x, unsigned int y);
+
+        /// \brief Adds a contour to the internal contours list.
+        /// \param contour The contour to be added.
         void add_InternalContour(SharedContour contour);
 
-        /// \fn void ComputeMoments()
-        /// \brief Computes the central, normalized central and hu moments, along with the centroid
+        /// \brief Computes the central, normalized central and hu moments,
+        /// along with the centroid.
         void ComputeMoments();
 
-        /// \fn cv::Scalar get_BlobMeanColor(const cv::Mat &imgLabel, const cv::Mat &img) const
         /// \brief Calculates mean color of a blob in an image.
         /// \param imgLabel Image of labels.
         /// \param img Original image.
         /// \return Average color.
         cv::Scalar get_MeanColor(const cv::Mat &imgLabel, const cv::Mat &img) const;
 
-
-        /// \fn void RenderBlob(const cv::Mat &imgLabel, cv::Mat &imgSource, cv::Mat &imgDest, unsigned short mode = 0x000f, cv::Scalar const &color = cv::Scalar(255, 255, 255), double alpha = 1.) const
         /// \brief Draws or prints information about a blob.
         /// \param imgLabel Label image (type = CV_16UC3 and continuous).
         /// \param imgSource Input image (type = CV_8UC3).
@@ -114,7 +140,6 @@ namespace cvb {
         /// \see CV_BLOB_RENDER_TO_STD
         void RenderBlob(const cv::Mat &imgLabel, const cv::Mat &imgSource, cv::Mat &imgDest, unsigned short mode = 0x000f, cv::Scalar const &color = cv::Scalar(255, 255, 255), double alpha = 1.) const;
 
-        /// \fn void SaveImage(std::string &filename, cv::Mat &img) const
         /// \brief Save the image of a blob to a file.
         /// The function uses an image (that can be the original pre-processed image or a processed one, or even the result of cvRenderBlobs, for example).
         /// Then the function saves a copy of the part of the image where the blob is.
@@ -122,19 +147,14 @@ namespace cvb {
         /// \param img Image.
         void SaveImage(const std::string &filename, const cv::Mat &img) const;
 
-        /// \fn void Print(std::ostream &out)
         /// \brief Prints the data to the out stream
         /// \param out The output stream
         void Print(std::ostream &out) const;
 
-        /// \fn void Merge(Blob &a_blob);
         /// \brief Merges this blob with a_blob. </summary>
-        ///
         /// \param The blob to merge with. </param>
         void Merge(Blob &a_blob);
 
-#pragma warning(push)
-#pragma warning(disable : 4251)
     protected:
         unsigned int minx; ///< X min.
         unsigned int maxx; ///< X max.
@@ -162,12 +182,10 @@ namespace cvb {
         cv::Point2d centroid;          ///< Centroid.
         Contour contour;               ///< Contour.
         ContoursList internalContours; ///< Internal contours.
-#pragma warning(pop)
     };
 
     typedef std::shared_ptr<Blob> SharedBlob; ///< Shared Blob type
 
-    /// \fn std::ostream &operator<< (std::ostream &output, const Blob &b)
     /// \brief Overload operator "<<" for printing blob structure.
     /// \return Stream.
     CVBLOB_EXPORT std::ostream &operator<< (std::ostream &output, const Blob &b);

@@ -39,7 +39,6 @@
 
 namespace cvb {
 
-    /// \fn double DotProductPoints(const cv::Point &a, const cv::Point &b, const cv::Point &c)
     /// \brief Dot product of the vectors ab and bc.
     /// \param a First point.
     /// \param b Middle point.
@@ -47,7 +46,6 @@ namespace cvb {
     /// \return Dot product of ab and bc.
     CVBLOB_EXPORT double DotProductPoints(const cv::Point &a, const cv::Point &b, const cv::Point &c);
 
-    /// \fn double CrossProductPoints(const cv::Point &a, const cv::Point &b, const cv::Point &c)
     /// \brief Cross product of the vectors ab and bc.
     /// \param a Point.
     /// \param b Point.
@@ -55,14 +53,12 @@ namespace cvb {
     /// \return Cross product of ab and bc.
     CVBLOB_EXPORT double CrossProductPoints(const cv::Point &a, const cv::Point &b, const cv::Point &c);
 
-    /// \fn double DistancePointPoint(const cv::Point &a, const cv::Point &b)
     /// \brief Distance between two points.
     /// \param a Point.
     /// \param b Point.
     /// \return Distance.
     CVBLOB_EXPORT double DistancePointPoint(const cv::Point &a, const cv::Point &b);
 
-    /// \fn double DistanceLinePoint(const cv::Point &a, const cv::Point &b, const cv::Point &c, bool isSegment=true)
     /// \brief Distance between line ab and point c.
     /// \param a First point of the segment.
     /// \param b Second point of the segment.

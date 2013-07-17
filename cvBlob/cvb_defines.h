@@ -26,15 +26,15 @@
 #ifdef _MSC_VER // MS VC
 
 # ifdef CVBLOB_LIB
-# define CVBLOB_EXPORT __declspec(dllexport)
+#  define CVBLOB_EXPORT __declspec(dllexport)
 # else
-# define CVBLOB_EXPORT __declspec(dllimport)
+#  define CVBLOB_EXPORT
 # endif
 
 #else // Other compilers
 
 # define CVBLOB_EXPORT
 
-#endif
+#endif // Compiler
 
 #endif  // _CVBLOB_DEFINES_H_

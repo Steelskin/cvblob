@@ -114,14 +114,14 @@ void Blob::add_Moment(unsigned int x, unsigned int y) {
     m02 += y * y;
 }
 
-void Blob::add_Moments(unsigned int min_x, unsigned int max_x, unsigned int y) {
+void Blob::add_Moment(unsigned int min_x, unsigned int max_x, unsigned int y) {
     minx = std::min(min_x, minx);
     maxx = std::max(max_x, maxx);
     miny = std::min(y, miny);
     maxy = std::max(y, maxy);
 
     unsigned int n = max_x - min_x + 1;           // Number of items
-    unsigned int x_sum = n * (min_x + max_x) / 2; // Sum from min_x to max_x
+    double x_sum = n * (min_x + max_x) / 2; // Sum from min_x to max_x
 
     m00 += n;
     m10 += x_sum;
@@ -129,12 +129,12 @@ void Blob::add_Moments(unsigned int min_x, unsigned int max_x, unsigned int y) {
     m11 += y * x_sum;
     m02 += y * y * n;
 
-    unsigned int sum_min_sq; // sum of squares from 1 to (min_x - 1)
+    double sum_min_sq; // sum of squares from 1 to (min_x - 1)
     if (min_x == 0)
         sum_min_sq = 0;
     else
         sum_min_sq = (min_x - 1) * (min_x) * (2 * (min_x - 1) + 1) / 6;
-    unsigned int sum_max_sq = max_x * (max_x + 1) * (2 * max_x + 1) / 6; // sum of squares from 1 to max_x
+    double sum_max_sq = max_x * (max_x + 1) * (2 * max_x + 1) / 6; // sum of squares from 1 to max_x
     this->m20 = sum_max_sq - sum_min_sq; // sum of squares from min_x to max_x
 }
 
@@ -145,9 +145,9 @@ void Blob::add_InternalContour(SharedContour contour) {
 void Blob::ComputeMoments() {
     centroid = cv::Point2d(m10 / m00, m01 / m00);
 
-    u11 = m11 - (m10*m01)/m00;
-    u20 = m20 - (m10*m10)/m00;
-    u02 = m02 - (m01*m01)/m00;
+    u11 = m11 - (m10 * m01) / m00;
+    u20 = m20 - (m10 * m10) / m00;
+    u02 = m02 - (m01 * m01) / m00;
 
     double m00_2 = m00 * m00;
 

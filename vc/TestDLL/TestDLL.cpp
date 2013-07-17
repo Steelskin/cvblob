@@ -14,7 +14,6 @@ int main(int argc, char* argv[]) {
     cv::Mat grey;
     grey.create(img.size(), CV_8UC1);
     cv::cvtColor(img, grey, CV_BGR2GRAY, 1);
-
     cv::threshold(grey, grey, 0, 255, CV_THRESH_BINARY_INV + CV_THRESH_OTSU);
 
     LARGE_INTEGER freq;
@@ -24,25 +23,19 @@ int main(int argc, char* argv[]) {
     // cvblob
     QueryPerformanceFrequency(&freq);
     QueryPerformanceCounter(&t0);
-    cvb::BlobList blobs;
 
-    for (int i = 0; i < 1000; i++) {
-        //cvb::BlobList blobs;
-        blobs.SimpleLabel(grey);
-        blobs.FilterByArea(50, img.cols * img.rows / 4);
-    }
+    cvb::BlobList blobs;
+    blobs.SimpleLabel(grey);
+    blobs.FilterByArea(50, img.cols * img.rows / 4);
 
     QueryPerformanceCounter(&tF);
     tDiff.QuadPart = tF.QuadPart - t0.QuadPart;
     elapsedTime = tDiff.QuadPart / (double) freq.QuadPart;
     std::cout << "cvblob:" << elapsedTime << std::endl;
 
-    // Rest
-    std::cin >> elapsedTime;
-
-    for (auto &a_blob : blobs.get_BlobsMap()) {
+    for (auto &a_blob : blobs.get_BlobsList()) {
         // extract and draws blob contour
-        auto contours = a_blob.second->get_Contour().get_ContourPolygon();
+        auto contours = a_blob->get_Contour().get_ContourPolygon();
         if (contours.size() != 1) {
             for (auto &iter = contours.begin(); iter != contours.end(); iter++) {
                 auto next_iter = iter;
@@ -55,7 +48,7 @@ int main(int argc, char* argv[]) {
         }
 
         // extract and draws every blob internal hole contour
-        auto internal_contours = a_blob.second->get_InternalContours();
+        auto internal_contours = a_blob->get_InternalContours();
         for (auto &a_contour : internal_contours) {
             auto contour_dot = a_contour->get_ContourPolygon();
             if (contour_dot.size() == 1)
@@ -71,10 +64,10 @@ int main(int argc, char* argv[]) {
         }
 
         // draws bounding box
-        cv::rectangle(img, a_blob.second->get_BoundingBox(), cv::Scalar(255, 0, 255));
+        cv::rectangle(img, a_blob->get_BoundingBox(), cv::Scalar(255, 0, 255));
 
         // draws centroid
-        cv::circle(img, a_blob.second->get_Centroid(), 2, cv::Scalar(255, 0, 0), 2);
+        cv::circle(img, a_blob->get_Centroid(), 2, cv::Scalar(255, 0, 0), 2);
     };
 
     cv::imwrite("imggray.png", grey);

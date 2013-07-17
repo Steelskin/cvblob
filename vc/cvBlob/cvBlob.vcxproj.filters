@@ -9,39 +9,35 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\cvBlob\cvb_blob.cpp">
+    <ClCompile Include="..\..\cvBlob\cvb_aux.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\cvBlob\cvb_aux.cpp">
+    <ClCompile Include="..\..\cvBlob\cvb_blob.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\cvBlob\cvb_contour.cpp">
+    <ClCompile Include="..\..\cvBlob\cvb_blob_list.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\cvBlob\cvb_blob_list.cpp">
+    <ClCompile Include="..\..\cvBlob\cvb_contour.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\cvBlob\cvb_contour.h">
+    <ClInclude Include="..\..\cvBlob\cvb_aux.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\cvBlob\cvb_blob.h">
+    <ClInclude Include="..\..\cvBlob\cvb_blob_list.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\cvBlob\cvb_aux.h">
+    <ClInclude Include="..\..\cvBlob\cvb_contour.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\cvBlob\cvb_blob_list.h">
+    <ClInclude Include="..\..\cvBlob\cvb_blob.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\cvBlob\cvb_defines.h">
+    <ClInclude Include="..\..\cvBlob\cvb_defines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

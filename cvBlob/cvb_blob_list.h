@@ -42,14 +42,13 @@
 #include "cvb_defines.h"
 
 namespace cvb {
-    /// \var typedef std::map<Label, SharedBlob> BlobsMap
+
     /// \brief List of blobs.
     /// A map is used to access each blob from its label number.
     /// \see Label
     /// \see CvBlob
     typedef std::map<Label, SharedBlob> BlobsMap;
 
-    /// \var typedef std::pair<Label, CvBlob> CvLabelBlob
     /// \brief Pair (label, blob).
     /// \see Label
     /// \see CvBlob
@@ -58,54 +57,51 @@ namespace cvb {
     /// \brief Class defining a list of blobs, along with labelling
     class CVBLOB_EXPORT BlobList {
     public:
-        BlobList();
+        BlobList(); ///< Default constructor.
 
-        /// \fn unsigned int SimpleLabel(const cv::Mat &img);
         /// \brief Label the connected parts of a binary image.
         /// Simple, fast algorithm. Does not compute contours.
         /// \param img Input binary image (type = CV_8UC1).
         void SimpleLabel(const cv::Mat &img);
 
-        /// \fn unsigned int LabelImage (const cv::Mat &img);
         /// \brief Label the connected parts of a binary image.
         /// Algorithm based on paper "A linear-time component-labeling algorithm using contour tracing technique" of Fu Chang, Chun-Jen Chen and Chi-Jen Lu.
         /// \param img Input binary image (type = CV_8UC1).
-        /// \return Number of pixels that have been labelled.
-        unsigned int LabelImage (const cv::Mat &img);
+        void LabelImage (const cv::Mat &img);
 
-        /// \fn void FilterLabels(cv::Mat &imgOut) const
         /// \brief Draw a binary image with the blobs.
         /// \param imgOut Output binary image (type = CV8UC1 and continuous).
         void FilterLabels(cv::Mat &imgOut) const;
 
-        BlobsMap get_BlobsMap() const;
+        /// \brief Gets a copy of the blobs list.
+        /// \return The blobs list.
+        std::list<SharedBlob> get_BlobsList() const;
+
+        /// \brief Gets the labelled picture.
+        /// \return The labelled picture.
         cv::Mat get_ImageLabel() const;
 
-        /// \fn Label GetLabel(unsigned int x, unsigned int y)
-        /// \param x X coordenate.
-        /// \param y Y coordenate.
+        /// \brief Gets the label at coordinates (x, y)
+        /// \param x X coordinate.
+        /// \param y Y coordinate.
         /// \return Label value.
         Label GetLabel(unsigned int x, unsigned int y) const;
 
-        /// \fn Label get_LargestBlob()
         /// \brief Find largest blob (biggest area).
-        /// \return Label of the largest blob or 0 if there are no blobs.
-        Label get_LargestBlob() const;
+        /// \return Largest blob, empty if no blob computed.
+        SharedBlob get_LargestBlob() const;
 
-        /// \fn void FilterByArea(unsigned int minArea, unsigned int maxArea)
         /// \brief Filter blobs by area.
         /// Those blobs whose areas are not in range will be erased from the internal list of blobs.
         /// \param minArea Minimun area.
         /// \param maxArea Maximun area.
         void FilterByArea(unsigned int minArea, unsigned int maxArea = std::numeric_limits<unsigned int>::max());
 
-        /// \fn void FilterByLabel(Label label)
         /// \brief Filter blobs by label.
         /// Delete all blobs except those with label l.
         /// \param label Label to leave.
         void FilterByLabel(Label label);
 
-        /// \fn void RenderBlobs(const cv::Mat &imgSource, cv::Mat &imgDest, unsigned short mode = 0x000f, double alpha = 1.) const
         /// \brief Draws or prints information about blobs.
         /// \param imgSource Input image (type = CV_8UC3).
         /// \param imgDest Output image (type = CV_8UC3 and is continuous).
@@ -119,12 +115,9 @@ namespace cvb {
         /// \see CV_BLOB_RENDER_TO_STD
         void RenderBlobs(const cv::Mat &imgSource, cv::Mat &imgDest, unsigned short mode = 0x000f, double alpha = 1.) const;
 
-#pragma warning(push)
-#pragma warning(disable : 4251)
     protected:
-        cv::Mat imgLabel; ///< Labelled image
-        BlobsMap blobs;   ///< Blobs map
-#pragma warning(pop)
+        cv::Mat imgLabel;            ///< Labelled image
+        std::list<SharedBlob> blobs; ///< Blobs list
     };
 
 

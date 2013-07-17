@@ -26,9 +26,7 @@
 
 using namespace cvb;
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // http://www.topcoder.com/tc?module=Static&d1=tutorials&d2=geometry1
-
 double cvb::DotProductPoints(const cv::Point &a, const cv::Point &b, const cv::Point &c) {
     double abx = b.x-a.x;
     double aby = b.y-a.y;
@@ -57,12 +55,13 @@ double cvb::DistancePointPoint(const cv::Point &a, const cv::Point &b) {
 double cvb::DistanceLinePoint(const cv::Point &a, const cv::Point &b, const cv::Point &c, bool isSegment) {
     if (isSegment) {
         double dot1 = cvb::DotProductPoints(a, b, c);
-        if (dot1>0) return cvb::DistancePointPoint(b, c);
+        if (dot1>0)
+            return cvb::DistancePointPoint(b, c);
 
         double dot2 = cvb::DotProductPoints(b, a, c);
-        if(dot2>0) return cvb::DistancePointPoint(a, c);
+        if(dot2>0)
+            return cvb::DistancePointPoint(a, c);
     }
 
     return fabs(cvb::CrossProductPoints(a,b,c) / cvb::DistancePointPoint(a,b));
 }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
