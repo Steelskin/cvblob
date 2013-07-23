@@ -93,7 +93,7 @@ void Blob::SaveImage(const std::string &filename, const cv::Mat &img) const {
 }
 
 cv::Rect Blob::get_BoundingBox() const {
-    return cv::Rect(minx, miny, maxx - minx, maxy - miny);
+    return cv::Rect(minx, miny, maxx - minx + 1, maxy - miny + 1);
 }
 
 void Blob::add_ChainCode(ChainCode chainCode) {

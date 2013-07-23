@@ -30,8 +30,6 @@
 
 using namespace cvb;
 
-const Label MaxLabel = std::numeric_limits<Label>::max();
-
 const std::tuple<cv::Point, unsigned char, ChainCode> movesE[4][3] =
 {
     { std::make_tuple(cv::Point(-1, -1), 3, ChainCode_up_left),    std::make_tuple(cv::Point( 0, -1), 0, ChainCode_up),    std::make_tuple(cv::Point( 1, -1), 0, ChainCode_up_right)   },
@@ -51,7 +49,7 @@ const std::tuple<cv::Point, unsigned char, ChainCode> movesI[4][3] =
 BlobList::BlobList() {
 }
 
-void BlobList::SimpleLabel(const cv::Mat &img) {
+void BlobList::SimpleLabel(const cv::Mat &img, Label max_label) {
     CV_Assert(img.type() == CV_8UC1);
 
     // Reset
@@ -70,7 +68,6 @@ void BlobList::SimpleLabel(const cv::Mat &img) {
         img.copyTo(imgInCont);
 
     Label label = 0;
-    int min_width = img.cols / 100 + 1; // Ignore small "lines"
     BlobsMap blob_map;
 
     unsigned char *imgInBuff = (unsigned char*) imgInCont.ptr();
@@ -107,21 +104,18 @@ void BlobList::SimpleLabel(const cv::Mat &img) {
             }
             x = end_x;
 
-            // Ignore small fragments
-            if (end_x - begin_x + 1 <= min_width)
-                continue;
-
             if (prev_blobs.empty()) {
                 // New blob
                 label++;
-                CV_Assert(label != MaxLabel);
+                if (label >= max_label)
+                    goto SimpleBlobEnd;
                 l = label;
-                blob = SharedBlob(new Blob(begin_x, end_x, y, label));
+                blob = SharedBlob(new Blob(begin_x, end_x - 1, y, label));
                 blob_map.insert(blob_map.end(), LabelBlob(label, blob));
             } else {
                 SharedBlob blob = prev_blobs.begin()->second;
 
-                if (prev_blobs.size() >1 )  {
+                if (prev_blobs.size() > 1)  {
                     // Merge blobs
                     for (auto &a_blob : prev_blobs) {
                         if (blob == a_blob.second)
@@ -131,16 +125,17 @@ void BlobList::SimpleLabel(const cv::Mat &img) {
                     }
                 }
                 l = blob->label;
-                blob->add_Moment(begin_x, end_x, y);
+                blob->add_Moment(begin_x, end_x - 1, y);
             }
 
             // Label line
-            for (int i_x = begin_x; i_x <= end_x; i_x++) {
+            for (int i_x = begin_x; i_x < end_x; i_x++) {
                 imageOut(i_x, y) = l;
             }
         }
     }
 
+SimpleBlobEnd:
     // Remove duplicates
     BlobsMap new_map;
     for (auto &a_blob : blob_map) {
@@ -156,7 +151,7 @@ void BlobList::SimpleLabel(const cv::Mat &img) {
     }
 }
 
-void BlobList::LabelImage (const cv::Mat &img) {
+void BlobList::LabelImage (const cv::Mat &img, Label max_label) {
     CV_Assert(img.type() == CV_8UC1);
 
 
@@ -208,7 +203,9 @@ void BlobList::LabelImage (const cv::Mat &img) {
                 // Label contour.
                 labelled = true;
                 label++;
-                CV_Assert(label != MaxLabel);
+
+                if (label >= max_label)
+                    goto LabelEnd;
                 imageOut(x, y) = label;
 
                 // XXX This is not necessary at all. I only do this for consistency.
@@ -361,6 +358,7 @@ void BlobList::LabelImage (const cv::Mat &img) {
         }
     }
 
+LabelEnd:
     // Populate list
     for (auto &a_blob : blob_map) {
         blobs.push_back(a_blob.second);

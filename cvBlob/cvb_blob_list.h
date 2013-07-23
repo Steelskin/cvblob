@@ -62,12 +62,12 @@ namespace cvb {
         /// \brief Label the connected parts of a binary image.
         /// Simple, fast algorithm. Does not compute contours.
         /// \param img Input binary image (type = CV_8UC1).
-        void SimpleLabel(const cv::Mat &img);
+        void SimpleLabel(const cv::Mat &img, Label max_label = MaxLabel);
 
         /// \brief Label the connected parts of a binary image.
         /// Algorithm based on paper "A linear-time component-labeling algorithm using contour tracing technique" of Fu Chang, Chun-Jen Chen and Chi-Jen Lu.
         /// \param img Input binary image (type = CV_8UC1).
-        void LabelImage (const cv::Mat &img);
+        void LabelImage (const cv::Mat &img, Label max_label = MaxLabel);
 
         /// \brief Draw a binary image with the blobs.
         /// \param imgOut Output binary image (type = CV8UC1 and continuous).
