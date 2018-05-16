@@ -48,7 +48,7 @@ namespace cvb {
     typedef uint32_t TrackID;
 
     /// \brief Struct that contain information about one track.
-    class Track {
+    class CVBLOB_EXPORT Track {
 		friend class BlobList;
 		friend class TrackList;
     public:
@@ -92,7 +92,7 @@ namespace cvb {
     typedef std::pair<TrackID, SharedTrack> IDTrackPair;
 
     // TODO MOve me to cvb_track_list
-    class TrackList {
+    class CVBLOB_EXPORT TrackList {
     public:
         /// \fn UpdateTracks(const BlobList &b, const double thDistance, const unsigned int thInactive, const unsigned int thActive = 0)
         /// \brief Updates list of tracks based on current blobs.
@@ -134,7 +134,7 @@ namespace cvb {
     /// \fn std::ostream &operator<< (std::ostream &output, const cvb::Track &t)
     /// \brief Overload operator "<<" for printing track structure.
     /// \return Stream.
-    //std::ostream& operator<< (std::ostream &output, const Track &t);
+    //CVBLOB_EXPORT std::ostream& operator<< (std::ostream &output, const Track &t);
 
 
 } // Namespace
