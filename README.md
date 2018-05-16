@@ -23,7 +23,7 @@ In Linux, if you have unpacked the source in $CVBLOB, enter in a console:
 
 If you are encountering issues, please read [this](http://www.cmake.org/HTML/RunningCMake.html).
 
-For Windows, a Visual Studio 2012 solution is provided in the vc subdirectory.
+For Windows, a Visual Studio 2017 solution is provided in the vc subdirectory.
 
 ### OpenCV path
 
@@ -53,3 +53,4 @@ Comments, suggestions and, why not, donations to:
 * [Cristóbal Carnero Liñán](mailto:grendel.ccl@gmail.com), first author
 * [Stefan Gachter](http://gachter.name)
 * Kouichi Nishino
+* [xfgryujk](https://github.com/xfgryujk)

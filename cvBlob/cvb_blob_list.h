@@ -1,4 +1,4 @@
-// Copyright (C) 2007 by Cristóbal Carnero Liñán
+ï»¿// Copyright (C) 2007 by CristÃ³bal Carnero LiÃ±Ã¡n
 // grendel.ccl@gmail.com
 //
 // Copyright (C) 2013 by Fabrice de Gans-Riberi for ProViSys Engineering
@@ -73,9 +73,9 @@ namespace cvb {
         /// \param imgOut Output binary image (type = CV8UC1 and continuous).
         void FilterLabels(cv::Mat &imgOut) const;
 
-        /// \brief Gets a copy of the blobs list.
-        /// \return The blobs list.
-        std::list<SharedBlob> get_BlobsList() const;
+        /// \brief Gets a copy of the blobs map.
+        /// \return The blobs map.
+        BlobsMap get_BlobsMap() const;
 
         /// \brief Gets the labelled picture.
         /// \return The labelled picture.
@@ -117,7 +117,7 @@ namespace cvb {
 
     protected:
         cv::Mat imgLabel;            ///< Labelled image
-        std::list<SharedBlob> blobs; ///< Blobs list
+        BlobsMap blobs;              ///< Blobs list
     };
 
 

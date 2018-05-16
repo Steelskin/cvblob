@@ -1,4 +1,4 @@
-// Copyright (C) 2007 by Cristóbal Carnero Liñán
+﻿// Copyright (C) 2007 by Cristóbal Carnero Liñán
 // grendel.ccl@gmail.com
 //
 // Copyright (C) 2013 by Fabrice de Gans-Riberi for ProViSys Engineering
@@ -22,6 +22,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <opencv2/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
 #include "cvb_blob.h"
@@ -314,7 +315,7 @@ void Blob::Merge(Blob &a_blob) {
     m02 += a_blob.m02;
 }
 
-std::ostream &operator<< (std::ostream &output, const Blob &b) {
+CVBLOB_EXPORT std::ostream& cvb::operator<< (std::ostream &output, const Blob &b) {
     b.Print(output);
     return output;
 }

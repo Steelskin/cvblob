@@ -1,4 +1,4 @@
-// Copyright (C) 2007 by Cristóbal Carnero Liñán
+﻿// Copyright (C) 2007 by Cristóbal Carnero Liñán
 // grendel.ccl@gmail.com
 //
 // Copyright (C) 2013 by Fabrice de Gans-Riberi for ProViSys Engineering
@@ -59,6 +59,8 @@ const Label MaxLabel = std::numeric_limits<Label>::max(); ///< Max Label value
 
     /// \brief Class that contains information about one blob.
     class CVBLOB_EXPORT Blob {
+		friend class Track;
+		friend class TrackList;
     public:
         /// \brief Constructor, with one dot.
         /// \param point   The blob first point.
@@ -190,7 +192,7 @@ const Label MaxLabel = std::numeric_limits<Label>::max(); ///< Max Label value
 
     /// \brief Overload operator "<<" for printing blob structure.
     /// \return Stream.
-    CVBLOB_EXPORT std::ostream &operator<< (std::ostream &output, const Blob &b);
+    CVBLOB_EXPORT std::ostream& operator<< (std::ostream &output, const Blob &b);
 
 } // Namespace
 

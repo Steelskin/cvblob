@@ -1,4 +1,4 @@
-// Copyright (C) 2007 by Cristóbal Carnero Liñán
+﻿// Copyright (C) 2007 by Cristóbal Carnero Liñán
 // grendel.ccl@gmail.com
 //
 // Copyright (C) 2013 by Fabrice de Gans-Riberi for ProViSys Engineering
@@ -23,10 +23,28 @@
 #include <cmath>
 #include <iostream>
 #include <sstream>
+#include <opencv2/imgproc.hpp>
 
 #include "cvb_track.h"
 
 using namespace cvb;
+
+Track::Track(TrackID id, SharedBlob blob) {
+	this->id = id;
+	this->label = blob->label;
+	this->minx = blob->minx;
+	this->miny = blob->miny;
+	this->maxx = blob->maxx;
+	this->maxy = blob->maxy;
+	this->centroid = blob->centroid;
+	this->lifetime = 0;
+	this->active = 0;
+	this->inactive = 0;
+}
+
+TrackID Track::get_ID() const {
+	return this->id;
+}
 
 double Track::DistanceFromBlob(const Blob &b) const {
     double d1;
@@ -57,10 +75,10 @@ double Track::DistanceFromBlob(const Blob &b) const {
 
     double d2;
     cv::Rect bounding_box = b.get_BoundingBox();
-    unsigned int blob_minx = bounding_box.x;
-    unsigned int blob_miny = bounding_box.y;
-    unsigned int blob_maxx = blob_minx + bounding_box.width;
-    unsigned int blob_maxy = blob_miny + bounding_box.height;
+    int blob_minx = bounding_box.x;
+    int blob_miny = bounding_box.y;
+    int blob_maxx = blob_minx + bounding_box.width;
+    int blob_maxy = blob_miny + bounding_box.height;
 
     if (this->centroid.x < blob_minx) {
         if (this->centroid.y < blob_miny)
@@ -88,6 +106,33 @@ double Track::DistanceFromBlob(const Blob &b) const {
     return std::min(d1, d2);
 }
 
+void Track::update_Blob(const SharedBlob &blob) {
+	this->label = blob->label;
+	this->centroid = blob->centroid;
+	this->minx = blob->minx;
+	this->miny = blob->miny;
+	this->maxx = blob->maxx;
+	this->maxy = blob->maxy;
+	if (this->inactive)
+		this->active = 0;
+	this->inactive = 0;
+}
+
+void Track::IncreaseInactive() {
+	this->inactive++;
+	this->label = 0;
+}
+
+bool Track::IsTooOld(unsigned int thInactive, unsigned int thActive) const {
+	return (this->inactive >= thInactive) || ((this->inactive) && (thActive) && (this->active < thActive));
+}
+
+void Track::IncreaseLifetime() {
+	this->lifetime++;
+	if (!this->inactive)
+		this->active++;
+}
+
 // Access to matrix
 //#define C(blob, track) close[((blob) + (track)*(nBlobs+2))]
 
@@ -96,59 +141,57 @@ double Track::DistanceFromBlob(const Blob &b) const {
 //#define AT(id) C((nBlobs), (id))
 
 // Access to identifications
-#define IB(label) C((label), (nTracks)+1)
-#define IT(id) C((nBlobs)+1, (id))
+#define IB(label) C((label), (nTracks)+1, close, nBlobs)
+#define IT(id) C((nBlobs)+1, (id), close, nBlobs)
 
 // Access to registers
 #define B(label) blob_map.find(IB(label))->second
 #define T(id) tracks.find(IT(id))->second
 
-inline TrackID &C(unsigned int blob, unsigned int track, std::vector<TrackID> &close, unsigned int nBlobs) {
+inline TrackID &C(size_t blob, size_t track, std::vector<TrackID> &close, size_t nBlobs) {
     return close[blob + track * (nBlobs + 2)];
 }
 
-inline TrackID &AB(unsigned int label, unsigned int nTracks, std::vector<TrackID> &close, unsigned int nBlobs) {
+inline TrackID &AB(unsigned int label, size_t nTracks, std::vector<TrackID> &close, size_t nBlobs) {
     return C(label, nTracks, close, nBlobs);
 }
 
-inline TrackID &AT(unsigned int id, unsigned int nTracks, std::vector<TrackID> &close, unsigned int nBlobs) {
+inline TrackID &AT(unsigned int id, size_t nTracks, std::vector<TrackID> &close, size_t nBlobs) {
     return C(nBlobs, id, close, nBlobs);
 }
 
 
-void getClusterForTrack(unsigned int trackPos, std::vector<TrackID> &close, unsigned int nBlobs, unsigned int nTracks, const BlobsMap &blob_map, TrackList const &tracks, std::list<SharedBlob> &bb, std::list<SharedTrack> &tt);
-
-void getClusterForBlob(unsigned int blobPos, std::vector<TrackID> &close, unsigned int nBlobs, unsigned int nTracks, const BlobsMap &blob_map, TrackList const &tracks, std::list<SharedBlob> &bb, std::list<SharedTrack> &tt) {
+void TrackList::getClusterForBlob(unsigned int blobPos, std::vector<TrackID> &close, unsigned int nBlobs, unsigned int nTracks, const BlobsMap &blob_map, std::list<SharedBlob> &bb, std::list<SharedTrack> &tt) const {
     for (unsigned int j = 0; j < nTracks; j++) {
         if (C(blobPos, j, close, nBlobs)) {
             tt.push_back(T(j));
 
-            unsigned int c = AT(j);
+            unsigned int c = AT(j, nTracks, close, nBlobs);
 
             C(blobPos, j, close, nBlobs) = 0;
             AB(blobPos, nTracks, close, nBlobs)--;
-            AT(j)--;
+            AT(j, nTracks, close, nBlobs)--;
 
             if (c>1) {
-                getClusterForTrack(j, close, nBlobs, nTracks, blob_map, tracks, bb, tt);
+                getClusterForTrack(j, close, nBlobs, nTracks, blob_map, bb, tt);
             }
         }
     }
 }
 
-void getClusterForTrack(unsigned int trackPos, std::vector<TrackID> &close, unsigned int nBlobs, unsigned int nTracks, const BlobsMap &blob_map, TrackList const &tracks, std::list<SharedBlob> &bb, std::list<SharedTrack> &tt) {
+void TrackList::getClusterForTrack(unsigned int trackPos, std::vector<TrackID> &close, unsigned int nBlobs, unsigned int nTracks, const BlobsMap &blob_map, std::list<SharedBlob> &bb, std::list<SharedTrack> &tt) const {
     for (unsigned int i=0; i<nBlobs; i++) {
-        if (C(i, trackPos)) {
+        if (C(i, trackPos, close, nBlobs)) {
             bb.push_back(B(i));
 
-            unsigned int c = AB(i);
+            unsigned int c = AB(i, nTracks, close, nBlobs);
 
-            C(i, trackPos) = 0;
-            AB(i)--;
-            AT(trackPos)--;
+            C(i, trackPos, close, nBlobs) = 0;
+            AB(i, nTracks, close, nBlobs)--;
+            AT(trackPos, nTracks, close, nBlobs)--;
 
             if (c>1) {
-                getClusterForBlob(i, close, nBlobs, nTracks, blob_map, tracks, bb, tt);
+                getClusterForBlob(i, close, nBlobs, nTracks, blob_map, bb, tt);
             }
         }
     }
@@ -168,7 +211,7 @@ void TrackList::UpdateTracks(const BlobList &blobs, const double thDistance, con
         // Initialization
         unsigned int i=0;
         for (auto & a_blob : blob_map) {
-            AB(i) = 0;
+            AB(i, nTracks, close, nBlobs) = 0;
             IB(i) = a_blob.second->label;
             i++;
         }
@@ -177,7 +220,7 @@ void TrackList::UpdateTracks(const BlobList &blobs, const double thDistance, con
 
         unsigned int j = 0;
         for (auto &a_track : tracks) {
-            AT(j) = 0;
+            AT(j, nTracks, close, nBlobs) = 0;
             IT(j) = a_track.second->get_ID();
             if (a_track.second->get_ID() > maxTrackID)
                 maxTrackID = a_track.second->get_ID();
@@ -187,15 +230,15 @@ void TrackList::UpdateTracks(const BlobList &blobs, const double thDistance, con
         // Proximity matrix calculation and "used blob" std::list inicialization:
         for (i = 0; i < nBlobs; i++)
             for (j = 0; j < nTracks; j++)
-                if (C(i, j) = T(j)->DistanceFromBlob(*B(i))) {
-                    AB(i)++;
-                    AT(j)++;
+                if (C(i, j, close, nBlobs) = (T(j)->DistanceFromBlob(*B(i)) < thDistance)) {
+                    AB(i, nTracks, close, nBlobs)++;
+                    AT(j, nTracks, close, nBlobs)++;
                 }
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Detect inactive tracks
         for (j=0; j<nTracks; j++) {
-            unsigned int c = AT(j);
+            unsigned int c = AT(j, nTracks, close, nBlobs);
 
             if (c==0) {
                 //std::cout << "Inactive track: " << j << std::endl;
@@ -209,7 +252,7 @@ void TrackList::UpdateTracks(const BlobList &blobs, const double thDistance, con
 
         // Detect new tracks
         for (i=0; i<nBlobs; i++) {
-            unsigned int c = AB(i);
+            unsigned int c = AB(i, nTracks, close, nBlobs);
 
             if (c==0) {
                 //std::cout << "Blob (new track): " << maxTrackID+1 << std::endl;
@@ -218,30 +261,20 @@ void TrackList::UpdateTracks(const BlobList &blobs, const double thDistance, con
                 // New track.
                 maxTrackID++;
                 SharedBlob blob = B(i);
-                SharedTrack track(new Track(blob));
-                track->get_ID() = maxTrackID;
-                track->label = blob->label;
-                track->minx = blob->minx;
-                track->miny = blob->miny;
-                track->maxx = blob->maxx;
-                track->maxy = blob->maxy;
-                track->centroid = blob->centroid;
-                track->lifetime = 0;
-                track->active = 0;
-                track->inactive = 0;
+                SharedTrack track(new Track(maxTrackID, blob));
                 tracks.insert(IDTrackPair(maxTrackID, track));
             }
         }
 
         // Clustering
         for (j = 0; j < nTracks; j++) {
-            unsigned int c = AT(j);
+            unsigned int c = AT(j, nTracks, close, nBlobs);
 
             if (c) {
                 std::list<SharedTrack> tt; tt.push_back(T(j));
                 std::list<SharedBlob> bb;
 
-                getClusterForTrack(j, close, (unsigned int) nBlobs, (unsigned int) nTracks, blob_map, tracks, bb, tt);
+                getClusterForTrack(j, close, (unsigned int) nBlobs, (unsigned int) nTracks, blob_map, bb, tt);
 
                 // Select track
                 SharedTrack track;
@@ -272,25 +305,12 @@ void TrackList::UpdateTracks(const BlobList &blobs, const double thDistance, con
                 // Update track
                 //std::cout << "Matching: track=" << track->get_ID() << ", blob=" << blob->label << std::endl;
                 track->update_Blob(blob);
-                // Move this
-                track->label = blob->label;
-                track->centroid = blob->centroid;
-                track->minx = blob->minx;
-                track->miny = blob->miny;
-                track->maxx = blob->maxx;
-                track->maxy = blob->maxy;
-                if (track->inactive)
-                    track->active = 0;
-                track->inactive = 0;
 
                 // Others to inactive
                 for (auto &a_track : tt) {
                     if (a_track != track) {
                         //std::cout << "Inactive: track=" << t->get_ID() << std::endl;
                         a_track->IncreaseInactive();
-                        // Move this
-                        a_track->inactive++;
-                        a_track->label = 0;
                     }
                 }
             }
@@ -299,14 +319,9 @@ void TrackList::UpdateTracks(const BlobList &blobs, const double thDistance, con
 
         for (auto &jt = tracks.begin(); jt != tracks.end();)
             if (jt->second->IsTooOld(thInactive, thActive)) {
-            //if ((jt->second->inactive >= thInactive) || ((jt->second->inactive) && (thActive) && (jt->second->active < thActive))) {
                 tracks.erase(jt++);
             } else {
                 jt->second->IncreaseLifetime();
-                // move this
-                jt->second->lifetime++;
-                if (!jt->second->inactive)
-                    jt->second->active++;
                 ++jt;
             }
     } catch (...) {
