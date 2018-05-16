@@ -1,4 +1,4 @@
-// Copyright (C) 2007 by Cristóbal Carnero Liñán
+ï»¿// Copyright (C) 2007 by CristÃ³bal Carnero LiÃ±Ã¡n
 // grendel.ccl@gmail.com
 //
 // Copyright (C) 2013 by Fabrice de Gans-Riberi for ProViSys Engineering
@@ -146,7 +146,7 @@ SimpleBlobEnd:
 
     // Generate final list
     for (auto &a_blob : new_map) {
-        blobs.push_back(a_blob.second);
+        blobs.insert(a_blob);
         a_blob.second->ComputeMoments();
     }
 }
@@ -167,10 +167,10 @@ void BlobList::LabelImage (const cv::Mat &img, Label max_label) {
 
     Label label = 0;
 
-    unsigned int imgIn_width = imgInCont.cols;
-    unsigned int imgIn_height = imgInCont.rows;
-    unsigned int imgOut_width = imgLabel.cols;
-    unsigned int imgOut_height = imgLabel.rows;
+    int imgIn_width = imgInCont.cols;
+    int imgIn_height = imgInCont.rows;
+    int imgOut_width = imgLabel.cols;
+    int imgOut_height = imgLabel.rows;
 
     Label lastLabel = 0;
     SharedBlob lastBlob;
@@ -188,8 +188,8 @@ void BlobList::LabelImage (const cv::Mat &img, Label max_label) {
         return imgOutBuff[x + y * stepOut];
     };
 
-    for (unsigned int y = 0; y < imgIn_height; y++) {
-        for (unsigned int x = 0; x < imgIn_width; x++) {
+    for (int y = 0; y < imgIn_height; y++) {
+        for (int x = 0; x < imgIn_width; x++) {
             // Ignore if input is 0
             if (!imageIn(x, y))
                 continue;
@@ -229,8 +229,8 @@ void BlobList::LabelImage (const cv::Mat &img, Label max_label) {
 
                     for (unsigned char i = 0; i < 3; i++) {
                         // Move to the direction
-                        int nx = xx + std::get<0>(movesE[direction][i]).x;
-                        int ny = yy + std::get<0>(movesE[direction][i]).y;
+						int nx = xx + std::get<0>(movesE[direction][i]).x;
+						int ny = yy + std::get<0>(movesE[direction][i]).y;
 
                         // Boundaries check
                         if ((nx >= imgIn_width) || (nx < 0) || (ny >= imgIn_height) || (ny < 0))
@@ -361,7 +361,7 @@ void BlobList::LabelImage (const cv::Mat &img, Label max_label) {
 LabelEnd:
     // Populate list
     for (auto &a_blob : blob_map) {
-        blobs.push_back(a_blob.second);
+        blobs.insert(a_blob);
         a_blob.second->ComputeMoments();
     }
 
@@ -393,8 +393,8 @@ void BlobList::FilterLabels(cv::Mat &imgOut) const {
                 // Find the blob and draw it
                 SharedBlob the_blob;
                 for (auto &a_blob : blobs)
-                    if (a_blob->label == l)
-                        the_blob = a_blob;
+                    if (a_blob.second->label == l)
+                        the_blob = a_blob.second;
                 if (the_blob.get() == nullptr)
                     imgDataOut[c] = 0x00;
                 else
@@ -406,7 +406,7 @@ void BlobList::FilterLabels(cv::Mat &imgOut) const {
     }
 }
 
-std::list<SharedBlob> BlobList::get_BlobsList() const {
+BlobsMap BlobList::get_BlobsMap() const {
     return this->blobs;
 }
 
@@ -430,9 +430,9 @@ SharedBlob BlobList::get_LargestBlob() const {
     SharedBlob outBlob;
 
     for (auto &a_blob : blobs) {
-        if (a_blob->get_Area() > maxArea) {
-            maxArea = a_blob->get_Area();
-            outBlob = a_blob;
+        if (a_blob.second->get_Area() > maxArea) {
+            maxArea = a_blob.second->get_Area();
+            outBlob = a_blob.second;
         }
     }
 
@@ -444,7 +444,7 @@ void BlobList::FilterByArea(unsigned int minArea, unsigned int maxArea) {
     while(it != blobs.end()) {
         auto &blob = *it;
 
-        if ((blob->get_Area() < minArea) || (blob->get_Area() > maxArea)) {
+        if ((blob.second->get_Area() < minArea) || (blob.second->get_Area() > maxArea)) {
             auto tmp = it;
             ++it;
             blobs.erase(tmp);
@@ -458,7 +458,7 @@ void BlobList::FilterByLabel(Label label) {
     while(it != blobs.end()) {
         auto &blob = *it;
 
-        if (blob->label != label) {
+        if (blob.second->label != label) {
             auto &tmp = it;
             ++it;
             blobs.erase(tmp);
@@ -553,7 +553,7 @@ void BlobList::RenderBlobs(const cv::Mat &imgSource, cv::Mat &imgDest, unsigned 
 
         unsigned int colorCount = 0;
         for (auto &a_blob : blobs) {
-            auto &label = a_blob->label;
+            auto &label = a_blob.second->label;
 
             double r, g, b;
 
@@ -565,7 +565,7 @@ void BlobList::RenderBlobs(const cv::Mat &imgSource, cv::Mat &imgDest, unsigned 
     }
 
     for (auto &a_blob : blobs)
-        a_blob->RenderBlob(imgLabel, imgSource, imgDest, mode, pal[a_blob->label], alpha);
+        a_blob.second->RenderBlob(imgLabel, imgSource, imgDest, mode, pal[a_blob.second->label], alpha);
 }
 
 

@@ -1,4 +1,4 @@
-// Copyright (C) 2007 by Cristóbal Carnero Liñán
+ï»¿// Copyright (C) 2007 by CristÃ³bal Carnero LiÃ±Ã¡n
 // grendel.ccl@gmail.com
 //
 // Copyright (C) 2013 by Fabrice de Gans-Riberi for ProViSys Engineering
@@ -49,20 +49,26 @@ namespace cvb {
 
     /// \brief Struct that contain information about one track.
     class Track {
+		friend class BlobList;
+		friend class TrackList;
     public:
-        Track(SharedBlob blob);
+        Track(TrackID id, SharedBlob blob);
 
-        TrackID get_ID();
+        TrackID get_ID() const;
         double DistanceFromBlob(const Blob &b) const;
+		void update_Blob(const SharedBlob &blob);
+		void IncreaseInactive();
+		bool Track::IsTooOld(unsigned int thInactive, unsigned int thActive) const;
+		void IncreaseLifetime();
 
     protected:
         TrackID id; ///< Track identification number.
         Label label; ///< Label assigned to the blob related to this track.
 
-        unsigned int minx; ///< X min.
-        unsigned int maxx; ///< X max.
-        unsigned int miny; ///< Y min.
-        unsigned int maxy; ///< y max.
+        int minx; ///< X min.
+        int maxx; ///< X max.
+        int miny; ///< Y min.
+        int maxy; ///< Y max.
 
         cv::Point centroid; ///< Centroid.
 
@@ -91,9 +97,9 @@ namespace cvb {
         /// \fn UpdateTracks(const BlobList &b, const double thDistance, const unsigned int thInactive, const unsigned int thActive = 0)
         /// \brief Updates list of tracks based on current blobs.
         /// Tracking based on:
-        /// A. Senior, A. Hampapur, Y-L Tian, L. Brown, S. Pankanti, R. Bolle. Appearance Models for
-        /// Occlusion Handling. Second International workshop on Performance Evaluation of Tracking and
-        /// Surveillance Systems & CVPR'01. December, 2001.
+        /// A.Â Senior,Â A.Â Hampapur,Â Y-LÂ Tian,Â L.Â Brown,Â S.Â Pankanti,Â R.Â Bolle.Â AppearanceÂ ModelsÂ for
+        /// OcclusionÂ Handling.Â SecondÂ InternationalÂ workshopÂ onÂ PerformanceÂ EvaluationÂ ofÂ TrackingÂ and
+        /// SurveillanceÂ SystemsÂ &Â CVPR'01.Â December,Â 2001.
         /// (http://www.research.ibm.com/peoplevision/PETS2001.pdf)
         /// \param b List of blobs.
         /// \param thDistance Max distance to determine when a track and a blob match.
@@ -118,6 +124,9 @@ namespace cvb {
     protected:
         TracksMap tracks;
 
+		void getClusterForBlob(unsigned int blobPos, std::vector<TrackID> &close, unsigned int nBlobs, unsigned int nTracks, const BlobsMap &blob_map, std::list<SharedBlob> &bb, std::list<SharedTrack> &tt) const;
+		void getClusterForTrack(unsigned int trackPos, std::vector<TrackID> &close, unsigned int nBlobs, unsigned int nTracks, const BlobsMap &blob_map, std::list<SharedBlob> &bb, std::list<SharedTrack> &tt) const;
+
     };
 
 
@@ -125,7 +134,7 @@ namespace cvb {
     /// \fn std::ostream &operator<< (std::ostream &output, const cvb::Track &t)
     /// \brief Overload operator "<<" for printing track structure.
     /// \return Stream.
-    std::ostream &operator<< (std::ostream &output, const Track &t);
+    //std::ostream& operator<< (std::ostream &output, const Track &t);
 
 
 } // Namespace

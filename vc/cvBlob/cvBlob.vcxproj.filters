@@ -23,6 +23,9 @@
     <ClCompile Include="..\..\cvBlob\cvb_contour.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\cvBlob\cvb_track.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\cvBlob\cvb_aux.h">
@@ -40,5 +43,11 @@
     <ClInclude Include="..\..\cvBlob\cvb_defines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\cvBlob\cvb_track.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

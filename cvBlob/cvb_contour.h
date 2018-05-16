@@ -1,4 +1,4 @@
-// Copyright (C) 2007 by Cristóbal Carnero Liñán
+ï»¿// Copyright (C) 2007 by CristÃ³bal Carnero LiÃ±Ã¡n
 // grendel.ccl@gmail.com
 //
 // Copyright (C) 2013 by Fabrice de Gans-Riberi for ProViSys Engineering
@@ -48,7 +48,7 @@ namespace cvb {
     //        7 0 1
     //        6   2
     //        5 4 3
-    CVBLOB_EXPORT enum ChainCode {
+    enum ChainCode {
         ChainCode_up         = 0, ///< Up.
         ChainCode_up_right   = 1, ///< Up and right.
         ChainCode_right      = 2, ///< Right.
