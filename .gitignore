@@ -22,3 +22,7 @@ Thumbs.db
 obj/
 [Rr]elease*/
 _ReSharper*/
+builddir/
+build/
+build_clang/
+.vscode/

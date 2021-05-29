@@ -12,33 +12,50 @@ In order to compile cvBlob you need the following:
 
 ## Compiling and installing
 
-(This section is a Work In Progress)
+### Linux
 
-In Linux, if you have unpacked the source in $CVBLOB, enter in a console:
+In Linux, Meson or CMake can be used.
+
+#### Meson
 
 ```shell
 cd $CVBLOB
-cmake .
-make
-sudo make install
+meson builddir
+cd builddir
+ninja
+(sudo) ninja install
 ```
 
-If you are encountering issues, please read [this](https://cmake.org/cmake/help/latest/manual/cmake.1.html).
-
-For Windows, a Visual Studio 2012 solution is provided in the vc subdirectory.
-
-### OpenCV path
-
-You can tell CMake where OpenCV is installed, in case it can't find it, using the `OpenCV_DIR` variable:
+#### CMake
 
 ```shell
-cmake . -DOpenCV_DIR=<path_to_OpenCV>
+cd $CVBLOB
+mkdir build
+cd build
+cmake ..
+ninja
+(sudo) ninja install
 ```
+
+### Windows
+
+A Visual Studio 2012 solution is provided in the vc subdirectory. CMake can also be used.
 
 ### Installation path
 
-To change the destination path for the installation, set the `CMAKE_INSTALL_PREFIX` variable:
+#### Meson
 
+When configuring with meson, simply provide a `--prefix=/path` like
+```shell
+...
+cd builddir
+meson --prefix=~/.local ..
+...
+```
+
+#### CMake
+
+To change the destination path for the installation, set the `CMAKE_INSTALL_PREFIX` variable:
 ```shell
 cmake . -DCMAKE_INSTALL_PREFIX=<installation_path>
 ```
@@ -60,3 +77,4 @@ Comments, suggestions and, why not, donations to:
 * [Stefan Gachter](http://gachter.name)
 * Kouichi Nishino
 * [Giandomenico De Sanctis](http://gidesa.altervista.org/)
+* [Michael de Gans](https://www.mdegans.dev)
