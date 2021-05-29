@@ -6,8 +6,8 @@ This library allows you to find and track blobs on a picture, using OpenCV.
 
 In order to compile cvBlob you need the following:
 
-* CMAKE https://www.cmake.org
-* OpenCV http://opencvlibrary.sourceforge.net
+* CMAKE https://cmake.org
+* OpenCV  https://opencv.org
 * A recent C++ compiler, that supports some C++11 features
 
 ## Compiling and installing
@@ -23,7 +23,7 @@ make
 sudo make install
 ```
 
-If you are encountering issues, please read [this](https://www.cmake.org/HTML/RunningCMake.html).
+If you are encountering issues, please read [this](https://cmake.org/cmake/help/latest/manual/cmake.1.html).
 
 For Windows, a Visual Studio 2012 solution is provided in the vc subdirectory.
 
