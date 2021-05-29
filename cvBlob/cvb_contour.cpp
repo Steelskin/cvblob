@@ -1,7 +1,7 @@
 // Copyright (C) 2007 by Cristóbal Carnero Liñán
 // grendel.ccl@gmail.com
 //
-// Copyright (C) 2013 by Fabrice de Gans-Riberi for ProViSys Engineering
+// Copyright (C) 2013 by Fabrice de Gans for ProViSys Engineering
 // fabrice.degans@gmail.com
 //
 // This file is part of cvBlob.
@@ -17,7 +17,7 @@
 // Lesser GNU General Public License for more details.
 //
 // You should have received a copy of the Lesser GNU General Public License
-// along with cvBlob.  If not, see <http://www.gnu.org/licenses/>.
+// along with cvBlob.  If not, see <https://www.gnu.org/licenses/>.
 //
 
 #include <climits>
@@ -320,8 +320,8 @@ void Contour::WriteSVG(const std::string &filename, const cv::Scalar &stroke, co
     std::ofstream f (filename);
 
     f << "<?xml version=\"1.0\" encoding=\"ISO-8859-1\" standalone=\"no\"?>" << std::endl;
-    f << "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\" \"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">" << std::endl;
-    f << "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xml:space=\"preserve\" width=\"" << maxx-minx << "px\" height=\"" << maxy-miny << "px\" viewBox=\"" << minx << " " << miny << " " << maxx << " " << maxy << "\" zoomAndPan=\"disable\" >" << std::endl;
+    f << "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 20010904//EN\" \"https://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd\">" << std::endl;
+    f << "<svg xmlns=\"https://www.w3.org/2000/svg\" xmlns:xlink=\"https://www.w3.org/1999/xlink\" xml:space=\"preserve\" width=\"" << maxx-minx << "px\" height=\"" << maxy-miny << "px\" viewBox=\"" << minx << " " << miny << " " << maxx << " " << maxy << "\" zoomAndPan=\"disable\" >" << std::endl;
 
     f << "<polygon fill=\"rgb(" << fill.val[0] << "," << fill.val[1] << "," << fill.val[2] << ")\" stroke=\"rgb(" << stroke.val[0] << "," << stroke.val[1] << "," << stroke.val[2] << ")\" stroke-width=\"1\" points=\"" << buffer.str() << "\"/>" << std::endl;
 

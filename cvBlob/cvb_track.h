@@ -1,7 +1,7 @@
-// Copyright (C) 2007 by Cristóbal Carnero Liñán
+// Copyright (C) 2007 by CristÃ³bal Carnero LiÃ±Ã¡n
 // grendel.ccl@gmail.com
 //
-// Copyright (C) 2013 by Fabrice de Gans-Riberi for ProViSys Engineering
+// Copyright (C) 2013 by Fabrice de Gans for ProViSys Engineering
 // fabrice.degans@gmail.com
 //
 // This file is part of cvBlob.
@@ -17,7 +17,7 @@
 // Lesser GNU General Public License for more details.
 //
 // You should have received a copy of the Lesser GNU General Public License
-// along with cvBlob.  If not, see <http://www.gnu.org/licenses/>.
+// along with cvBlob.  If not, see <https://www.gnu.org/licenses/>.
 //
 
 /// \file cvb_track.h
@@ -91,10 +91,10 @@ namespace cvb {
         /// \fn UpdateTracks(const BlobList &b, const double thDistance, const unsigned int thInactive, const unsigned int thActive = 0)
         /// \brief Updates list of tracks based on current blobs.
         /// Tracking based on:
-        /// A. Senior, A. Hampapur, Y-L Tian, L. Brown, S. Pankanti, R. Bolle. Appearance Models for
-        /// Occlusion Handling. Second International workshop on Performance Evaluation of Tracking and
-        /// Surveillance Systems & CVPR'01. December, 2001.
-        /// (http://www.research.ibm.com/peoplevision/PETS2001.pdf)
+        /// A.Senior, A.Hampapur, Y-L Tian, L. Brown, S. Pankanti, R. Bolle. Appearance Models for
+        /// Occlusion Handling. Second International workshop on Performance Evaluation of Tracking and
+        /// Surveillance systems & CVPR'01. December, 2001.
+        /// (https://researcher.watson.ibm.com/researcher/files/us-smiyaza/PETS2001.pdf)
         /// \param b List of blobs.
         /// \param thDistance Max distance to determine when a track and a blob match.
         /// \param thInactive Max number of frames a track can be inactive.

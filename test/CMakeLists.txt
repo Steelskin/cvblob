@@ -14,7 +14,7 @@
 # Lesser GNU General Public License for more details.
 #
 # You should have received a copy of the Lesser GNU General Public License
-# along with cvBlob.  If not, see <http://www.gnu.org/licenses/>.
+# along with cvBlob.  If not, see <https://www.gnu.org/licenses/>.
 #
 
 find_package(OpenCV REQUIRED)

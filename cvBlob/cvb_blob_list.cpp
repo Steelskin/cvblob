@@ -1,7 +1,7 @@
-// Copyright (C) 2007 by Cristóbal Carnero Liñán
+// Copyright (C) 2007 by CristÃ³bal Carnero LiÃ±Ã¡n
 // grendel.ccl@gmail.com
 //
-// Copyright (C) 2013 by Fabrice de Gans-Riberi for ProViSys Engineering
+// Copyright (C) 2013 by Fabrice de Gans for ProViSys Engineering
 // fabrice.degans@gmail.com
 //
 // This file is part of cvBlob.
@@ -17,7 +17,7 @@
 // Lesser GNU General Public License for more details.
 //
 // You should have received a copy of the Lesser GNU General Public License
-// along with cvBlob.  If not, see <http://www.gnu.org/licenses/>.
+// along with cvBlob.  If not, see <https://www.gnu.org/licenses/>.
 //
 
 #include <cmath>
