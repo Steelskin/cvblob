@@ -32,7 +32,7 @@ ninja
 cd $CVBLOB
 mkdir build
 cd build
-cmake ..
+cmake -GNinja ..
 ninja
 (sudo) ninja install
 ```
