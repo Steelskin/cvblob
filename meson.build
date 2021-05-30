@@ -60,7 +60,7 @@ libcvblob = library(meson.project_name(), [src, includes],
   install: true,
 )
 
-install_headers(headers, subdir: meson.project_name())
+install_headers(includes, subdir: meson.project_name())
 
 # a dependency object for use as a Meson subproject
 cvblob_dep = declare_dependency(

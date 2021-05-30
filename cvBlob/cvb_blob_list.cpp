@@ -235,8 +235,11 @@ void BlobList::LabelImage (const cv::Mat &img, Label max_label) {
                         int ny = yy + std::get<0>(movesE[direction][i]).y;
 
                         // Boundaries check
-                        if ((nx >= imgIn_width) || (nx < 0) || (ny >= imgIn_height) || (ny < 0))
+                        if (nx < 0 || ny < 0 )
                             continue;
+                        if (static_cast<unsigned>(nx) >= imgIn_width ||
+                            static_cast<unsigned>(ny) >= imgIn_height)
+                          continue;
 
                         if (!imageIn(nx, ny)) {
                             imageOut(nx, ny) = MaxLabel;
@@ -309,8 +312,11 @@ void BlobList::LabelImage (const cv::Mat &img, Label max_label) {
                         int ny = yy + std::get<0>(movesI[direction][i]).y;
 
                         // Boundaries check
-                        if ((nx >= imgIn_width) || (nx < 0) || (ny >= imgIn_height) || (ny < 0))
-                            continue;
+                        if (nx < 0 || ny < 0)
+                          continue;
+                        if (static_cast<unsigned>(nx) >= imgIn_width ||
+                            static_cast<unsigned>(ny) >= imgIn_height)
+                          continue;
 
                         if (!imageIn(nx, ny)) {
                             imageOut(nx, ny) = MaxLabel;
