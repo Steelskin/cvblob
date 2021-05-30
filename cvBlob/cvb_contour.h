@@ -68,22 +68,25 @@ namespace cvb {
     /// \brief Contour class.
     class CVBLOB_EXPORT Contour {
     public:
+        Contour();
+
+        Contour(cv::Point startingPoint);
 
         /// \brief Constructor.
         /// \param startingPoint  The contour starting point.
         /// \param chainCodes     Initial chain codes.
-        Contour(cv::Point startingPoint = cv::Point(0, 0), ChainCodes &chainCodes = ChainCodes());
+        Contour(cv::Point startingPoint, ChainCodes chainCodes);
 
         /// \brief Constructor.
         /// \param x              The contour starting point X-coordinate.
         /// \param y              The contour starting point Y-coordinate.
         /// \param chainCodes     Initial chain codes.
-        Contour(unsigned int x, unsigned int y, ChainCodes &chainCodes = ChainCodes());
+        Contour(unsigned int x, unsigned int y, ChainCodes chainCodes);
 
         /// \brief  Clears this object and resets all internal data structures.
         /// \param startingPoint  The new starting point.
         /// \param chainCodes     The new initial chain codes.
-        void reset(cv::Point startingPoint = cv::Point(0, 0), ChainCodes &chainCodes = ChainCodes());
+        void reset(cv::Point startingPoint, ChainCodes chainCodes);
 
         // \brief Adds a chain code to this object.
         // \param chainCode       The chain code to be added.

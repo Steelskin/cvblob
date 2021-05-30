@@ -54,8 +54,6 @@ namespace cvb {
     /// \brief Type of Label.
     typedef uint8_t Label;
 #define CVB_LABEL CV_8UC1
-const Label MaxLabel = std::numeric_limits<Label>::max(); ///< Max Label value
-
 
     /// \brief Class that contains information about one blob.
     class CVBLOB_EXPORT Blob {

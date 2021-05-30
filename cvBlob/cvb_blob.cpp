@@ -23,6 +23,7 @@
 #include <cmath>
 #include <iostream>
 #include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 
 #include "cvb_blob.h"
 
@@ -46,7 +47,7 @@ Blob::Blob(cv::Point point, Label label) {
 Blob::Blob(unsigned int min_x, unsigned int max_x, unsigned int y, Label label) {
     this->label = label;
     unsigned int n = max_x - min_x + 1;           // Number of items
-    double x_sum = n * (min_x + max_x) / 2; // Sum from min_x to max_x
+    double x_sum = n * (min_x + max_x) / 2.; // Sum from min_x to max_x
 
     this->m00 = n;
     this->minx = min_x;
@@ -63,8 +64,8 @@ Blob::Blob(unsigned int min_x, unsigned int max_x, unsigned int y, Label label) 
     if (min_x == 0)
         sum_min_sq = 0;
     else
-        sum_min_sq = (min_x - 1) * (min_x) * (2 * (min_x - 1) + 1) / 6;
-    double sum_max_sq = max_x * (max_x + 1) * (2 * max_x + 1) / 6; // sum of squares from 1 to max_x
+        sum_min_sq = (min_x - 1.) * (min_x) * (2. * (min_x - 1.) + 1.) / 6.;
+    double sum_max_sq = max_x * (max_x + 1.) * (2. * max_x + 1.) / 6.; // sum of squares from 1 to max_x
     this->m20 = sum_max_sq - sum_min_sq; // sum of squares from min_x to max_x
 }
 
@@ -121,7 +122,7 @@ void Blob::add_Moment(unsigned int min_x, unsigned int max_x, unsigned int y) {
     maxy = std::max(y, maxy);
 
     unsigned int n = max_x - min_x + 1;           // Number of items
-    double x_sum = n * (min_x + max_x) / 2; // Sum from min_x to max_x
+    double x_sum = n * (min_x + max_x) / 2.; // Sum from min_x to max_x
 
     m00 += n;
     m10 += x_sum;
@@ -133,8 +134,8 @@ void Blob::add_Moment(unsigned int min_x, unsigned int max_x, unsigned int y) {
     if (min_x == 0)
         sum_min_sq = 0;
     else
-        sum_min_sq = (min_x - 1) * (min_x) * (2 * (min_x - 1) + 1) / 6;
-    double sum_max_sq = max_x * (max_x + 1) * (2 * max_x + 1) / 6; // sum of squares from 1 to max_x
+        sum_min_sq = (min_x - 1.) * (min_x) * (2. * (min_x - 1.) + 1.) / 6.;
+    double sum_max_sq = max_x * (max_x + 1.) * (2. * max_x + 1.) / 6.; // sum of squares from 1 to max_x
     this->m20 = sum_max_sq - sum_min_sq; // sum of squares from min_x to max_x
 }
 
@@ -174,8 +175,6 @@ cv::Scalar Blob::get_MeanColor(const cv::Mat &imgLabel, const cv::Mat &img) cons
     size_t stepImg = imgBlob.step1();;
     unsigned int imgLabel_width = imgLabel.cols;
     unsigned int imgLabel_height = imgLabel.rows;
-    unsigned int img_width = imgBlob.cols;
-    unsigned int img_height = imgBlob.rows;
     unsigned int imgChan = imgBlob.channels();
 
     Label *labels = (Label *)imgLabel.ptr();

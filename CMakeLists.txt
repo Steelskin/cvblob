@@ -32,7 +32,7 @@ set(SRC
   cvBlob/cvb_blob_list.cpp
   cvBlob/cvb_blob.cpp
   cvBlob/cvb_contour.cpp
-  cvBlob/cvb_track.cpp
+  # cvBlob/cvb_track.cpp
 )
 
 set(INCLUDES
@@ -41,7 +41,7 @@ set(INCLUDES
   cvBlob/cvb_blob.h
   cvBlob/cvb_contour.h
   cvBlob/cvb_defines.h
-  cvBlob/cvb_track.cpp
+  # cvBlob/cvb_track.h
 )
 
 # library target

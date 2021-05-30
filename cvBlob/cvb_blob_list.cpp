@@ -30,6 +30,10 @@
 
 using namespace cvb;
 
+namespace {
+    const Label MaxLabel = std::numeric_limits<Label>::max();
+}
+
 const std::tuple<cv::Point, unsigned char, ChainCode> movesE[4][3] =
 {
     { std::make_tuple(cv::Point(-1, -1), 3, ChainCode_up_left),    std::make_tuple(cv::Point( 0, -1), 0, ChainCode_up),    std::make_tuple(cv::Point( 1, -1), 0, ChainCode_up_right)   },
@@ -169,8 +173,6 @@ void BlobList::LabelImage (const cv::Mat &img, Label max_label) {
 
     unsigned int imgIn_width = imgInCont.cols;
     unsigned int imgIn_height = imgInCont.rows;
-    unsigned int imgOut_width = imgLabel.cols;
-    unsigned int imgOut_height = imgLabel.rows;
 
     Label lastLabel = 0;
     SharedBlob lastBlob;
@@ -291,7 +293,7 @@ void BlobList::LabelImage (const cv::Mat &img, Label max_label) {
                 // XXX This is not necessary (I believe). I only do this for consistency.
                 imageOut(x, y + 1) = MaxLabel;
 
-                SharedContour contour(new Contour(cv::Point(x, y)));
+                SharedContour contour(new Contour(cv::Point(x, y), ChainCodes()));
 
                 unsigned char direction = 3;
                 unsigned int xx = x;
@@ -374,8 +376,6 @@ void BlobList::FilterLabels(cv::Mat &imgOut) const {
     size_t stepOut = imgOut.step1();
     int imgIn_width = imgLabel.cols;
     int imgIn_height = imgLabel.rows;
-    int imgOut_width = imgOut.cols;
-    int imgOut_height = imgOut.rows;
 
     char *imgDataOut = (char *) imgOut.ptr();
     Label *imgDataIn=(Label *)imgLabel.ptr();
@@ -454,7 +454,7 @@ void BlobList::FilterByArea(unsigned int minArea, unsigned int maxArea) {
 }
 
 void BlobList::FilterByLabel(Label label) {
-    auto &it = blobs.begin();
+    auto it = blobs.begin();
     while(it != blobs.end()) {
         auto &blob = *it;
 

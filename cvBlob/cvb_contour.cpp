@@ -21,15 +21,7 @@
 //
 
 #include <climits>
-
-#ifdef _USE_MATH_DEFINES
-# include <cmath>
-#else
-# define _USE_MATH_DEFINES
-# include <cmath>
-# undef _USE_MATH_DEFINES
-#endif
-
+#include <cmath>
 #include <deque>
 #include <iostream>
 #include <fstream>
@@ -40,12 +32,9 @@
 
 using namespace cvb;
 
-#ifdef M_PI
-const double pi = M_PI;
-#else
-const double pi = std::atan(1.) * 4.;
-#endif // M_PI
-
+namespace {
+    const double kPi = std::atan(1) * 4;
+}  // namespace
 
 /// \brief Move vectors of chain codes.
 const cv::Point ChainCodeMoves[8] = {
@@ -59,16 +48,20 @@ const cv::Point ChainCodeMoves[8] = {
     cv::Point(-1, -1)
 };
 
-Contour::Contour(cv::Point startingPoint, ChainCodes &chainCodes) {
+Contour::Contour() : Contour(cv::Point(0, 0), ChainCodes()) {}
+
+Contour::Contour(cv::Point startingPoint) : Contour(startingPoint, ChainCodes()) {}
+
+Contour::Contour(cv::Point startingPoint, ChainCodes chainCodes) {
     reset(startingPoint, chainCodes);
 }
 
 // TODO Update to delegating constructore in VC2013
-Contour::Contour(unsigned int x, unsigned int y, ChainCodes &chainCodes) {
+Contour::Contour(unsigned int x, unsigned int y, ChainCodes chainCodes) {
     reset(cv::Point(x, y), chainCodes);
 }
 
-void Contour::reset(cv::Point startingPoint, ChainCodes &chainCodes) {
+void Contour::reset(cv::Point startingPoint, ChainCodes chainCodes) {
     starting_point = startingPoint;
     chain_codes = chainCodes;
     polygon.clear();
@@ -153,7 +146,7 @@ double Contour::get_Perimeter() const {
 
 double Contour::get_Circularity() const {
     double l = get_Perimeter();
-    double c = (l * l / get_Area()) - 4. * pi;
+    double c = (l * l / get_Area()) - 4. * kPi;
 
     if (c >= 0.)
         return c;
@@ -273,9 +266,6 @@ void Contour::RenderContour(cv::Mat &img, const cv::Scalar &color) const {
     CV_Assert(img.type() == CV_8UC3 && img.isContinuous());
 
     size_t stepDst = img.step;
-    unsigned int img_width = img.cols;
-    unsigned int img_height = img.rows;
-
     unsigned char *imgData = (unsigned char *)img.ptr();
 
     cv::Point point = starting_point;

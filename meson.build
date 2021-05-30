@@ -41,7 +41,7 @@ src = files(
   'cvBlob/cvb_blob_list.cpp',
   'cvBlob/cvb_blob.cpp',
   'cvBlob/cvb_contour.cpp',
-  'cvBlob/cvb_track.cpp',
+  # 'cvBlob/cvb_track.cpp',
 )
 
 includes = files(
@@ -50,12 +50,12 @@ includes = files(
   'cvBlob/cvb_blob.h',
   'cvBlob/cvb_contour.h',
   'cvBlob/cvb_defines.h',
-  'cvBlob/cvb_track.cpp',
+  # 'cvBlob/cvb_track.h',
 )
 
 libcvblob = library(meson.project_name(), [src, includes],
   dependencies: deps,
-  cpp_rgs: cflags,
+  cpp_args: cflags,
   version: meson.project_version(),
   install: true,
 )
