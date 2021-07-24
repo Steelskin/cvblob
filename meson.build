@@ -53,25 +53,41 @@ includes = files(
   # 'cvBlob/cvb_track.h',
 )
 
-libcvblob = library(meson.project_name(), [src, includes],
-  dependencies: deps,
-  cpp_args: cflags,
-  version: meson.project_version(),
-  install: true,
-)
-
-install_headers(includes, subdir: meson.project_name())
+# build shared and/or static targets
+# FIXME(mdegans): find a way to do this with just `library`
+default_library = get_option('default_library')
+if default_library == 'shared' or default_library == 'both'
+  libcvblob_so = shared_library(meson.project_name(), [src, includes],
+    dependencies: deps,
+    cpp_args: [
+      cflags,
+      '-fvisibility=hidden',
+      '-DCVB2_BUILD_SHARED',
+    ],
+    version: meson.project_version(),
+    install: true,
+  )
+elif default_library == 'static' or default_library == 'both'
+  libcvblob_a = static_library(meson.project_name(), src,
+    include_directories: includes,
+    dependencies: deps,
+    cpp_args: cflags,
+    version: meson.project_version(),
+    install: true,
+  )
+endif
 
 # a dependency object for use as a Meson subproject
 cvblob_dep = declare_dependency(
   dependencies: deps,
-  link_with: libcvblob,
+  link_with: libcvblob_so,
 )
 
 # generate pkg-config .pc
 pkg = import('pkgconfig')
-pkg.generate(libcvblob,
+pkg.generate(libcvblob_so,
   description: 'Find and track blobs using OpenCV',
   requires: deps,
   url: 'https://github.com/Steelskin/cvblob',
+  subdirs: meson.project_name(),
 )

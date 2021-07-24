@@ -20,11 +20,10 @@
 cmake_minimum_required(VERSION 3.1)
 project(cvBlob)
 
-# project requires c++11
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# dependencies
+# Dependencies
 find_package(OpenCV REQUIRED)
 
 set(SRC
@@ -44,16 +43,21 @@ set(INCLUDES
   # cvBlob/cvb_track.h
 )
 
-# library target
+# Library target
 set(LIB_NAME ${CMAKE_PROJECT_NAME})
 add_library(${LIB_NAME} SHARED ${SRC} ${INCLUDES})
-target_include_directories(${LIB_NAME} PUBLIC ${OpenCV_INCLUDE_DIRS})
+target_include_directories(${LIB_NAME} PUBLIC ${OpenCV_INCLUDE_DIRS}
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/${LIB_NAME}>
+  $<INSTALL_INTERFACE:include/${LIB_NAME}>  # <prefix>/include/mylib
+)
 target_link_libraries(${LIB_NAME} ${OpenCV_LIBS})
 
-# installation
+# Installation
 install(TARGETS ${LIB_NAME}
   DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
+
+# Somehow, ${CMAKE_INSTALL_INCLUDEDIR} is blank so we use this "custom" path.
 install(FILES ${INCLUDES}
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${CMAKE_PROJECT_NAME}
+  DESTINATION ${CMAKE_INSTALL_PREFIX}/include/${CMAKE_PROJECT_NAME}
 )
